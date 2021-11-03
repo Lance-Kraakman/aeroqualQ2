@@ -6,9 +6,7 @@
  */
 #include "aeroqual.h"
 
-#define MAX_NUM_WORDS 1024 // maximum number of words in input file
 #define REQUIRED_DELIMS "\n ,-!.?-:;"
-
 #define REL_PATH "/home/lance/eclipse-workspace/aeroqualQ2"
 #define INPUT_FILE REL_PATH "/infile.txt"
 #define OUTPUT_FILE REL_PATH "/outfile.txt"
@@ -57,11 +55,11 @@ int main(int argc, char **argv) {
 	setup(&infilePointer, &outfilePointer, &infileBuffer); // setups stuff
 
 	// calculate the size our buffers need to be
-	int wordArraySize = countTokens(infileBuffer, REQUIRED_DELIMS) + 1;
+	int maxWordArraySize = countTokens(infileBuffer, REQUIRED_DELIMS) + 1;
 
 	// Allocate memory for an array of strings and an array of counted strings
-	char *stringArray[wordArraySize];
-	countedString *countedStringArray[wordArraySize];
+	char *stringArray[maxWordArraySize];
+	countedString *countedStringArray[maxWordArraySize];
 
 	//create string array
 	createStringArray(stringArray, infileBuffer, REQUIRED_DELIMS);
@@ -118,7 +116,7 @@ int createStringArray(char **stringArray, char *inputFileBuffer, const char* del
  * Conuts the number of tokens that will be generated from the delims
  */
 int countTokens(char *inputFileBuffer, const char* delims) {
-	// we need to copy the *inputFileBuffer because we cannot use strtok_r twice on the same buffer
+	// we need to copy the inputFileBuffer because we cannot use strtok_r twice on the same buffer
 	int len = strlen(inputFileBuffer);
 	char *bufferCpy = malloc(len*sizeof(char));
 	strcpy(bufferCpy, inputFileBuffer);
