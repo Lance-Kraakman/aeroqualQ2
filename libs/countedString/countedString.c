@@ -66,5 +66,5 @@ void createCountedStringArray(countedString **countedStringArray, char **stringA
 		}
 		i++;
 	}
-	countedStringArray[countedStringCount] = NULL;
+	countedStringArray[countedStringCount] = NULL; // Null Terminate the counted string array
 }
