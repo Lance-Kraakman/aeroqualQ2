@@ -66,3 +66,8 @@
 1 : lot
 1 : of
 1 : contributors
+3 : hello
+1 : my
+1 : name
+1 : is
+1 : tom

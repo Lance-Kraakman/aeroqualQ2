@@ -13,6 +13,14 @@
 #define INPUT_FILE REL_PATH "/infile.txt"
 #define OUTPUT_FILE REL_PATH "/outfile.txt"
 
+int countTokens(char *inputFileBuffer, const char* delims);
+
+/**
+ * Setup Function reads the infile.txt into a buffer and makes any chars lowercase.
+ * Memory is allocated into this buffer.
+ * Opens the output file.
+ *
+ */
 void setup(FILE **infilePp, FILE **outfilePp, char **fileBufferPtr) {
 
 	chdir(REL_PATH); 		// change to the correct relative path
@@ -45,11 +53,15 @@ int main(int argc, char **argv) {
 
 	char *infileBuffer; FILE *infilePointer=NULL; FILE *outfilePointer=NULL;
 
+	// setup our FILE ptrs and get our lowercase input string buffer
 	setup(&infilePointer, &outfilePointer, &infileBuffer); // setups stuff
 
-	// create an array of strings and an array of counted strings
-	char **stringArray = malloc(sizeof(char)*MAX_NUM_WORDS);
-	countedString **countedStringArray= malloc(sizeof(countedString)*MAX_NUM_WORDS);
+	// calculate the size our buffers need to be
+	int wordArraySize = countTokens(infileBuffer, REQUIRED_DELIMS) + 1;
+
+	// Allocate memory for an array of strings and an array of counted strings
+	char *stringArray[wordArraySize];
+	countedString *countedStringArray[wordArraySize];
 
 	//create string array
 	createStringArray(stringArray, infileBuffer, REQUIRED_DELIMS);
@@ -99,6 +111,24 @@ int createStringArray(char **stringArray, char *inputFileBuffer, const char* del
 		i++;
 	}
 	*(stringArray+i) = NULL;
+	return i;
+}
+
+/*
+ * Conuts the number of tokens that will be generated from the delims
+ */
+int countTokens(char *inputFileBuffer, const char* delims) {
+	// we need to copy the *inputFileBuffer because we cannot use strtok_r twice on the same buffer
+	int len = strlen(inputFileBuffer);
+	char *bufferCpy = malloc(len*sizeof(char));
+	strcpy(bufferCpy, inputFileBuffer);
+	char *tokenPtr;
+	char *token = strtok_r(bufferCpy, REQUIRED_DELIMS, &tokenPtr);
+	int i=0;
+	while(token != NULL) {
+		token = strtok_r(NULL, REQUIRED_DELIMS, &tokenPtr);
+		i++;
+	}
 	return i;
 }
 
