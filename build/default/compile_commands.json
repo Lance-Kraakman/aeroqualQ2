@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/lance/eclipse-workspace/aeroqualQ2/build/default",
-  "command": "/usr/bin/cc     -o CMakeFiles/aeroqual.dir/aeroqual.c.o   -c /home/lance/eclipse-workspace/aeroqualQ2/aeroqual.c",
-  "file": "/home/lance/eclipse-workspace/aeroqualQ2/aeroqual.c"
-}
-]

@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/lance/eclipse-workspace/aeroqualQ2/libs/countedString/countedString.c
+countedString.h
+/home/lance/eclipse-workspace/aeroqualQ2/libs/countedString/countedString.h
+
+/home/lance/eclipse-workspace/aeroqualQ2/libs/countedString/countedString.h
+stdio.h
+-
+string.h
+-
+stdlib.h
+-
+unistd.h
+-
+ctype.h
+-
+

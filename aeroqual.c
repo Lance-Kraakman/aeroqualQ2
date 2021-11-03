@@ -13,40 +13,46 @@
 #define INPUT_FILE REL_PATH "/infile.txt"
 #define OUTPUT_FILE REL_PATH "/outfile.txt"
 
-int main(int argc, char **argv) {
-
-	if (strlen(REL_PATH)<1) {
-		printf("PLEASE SET REL_PATH TO PATH OF YOUR DESIRED FILE LOCATION");
-		return 0;
-	}
+void setup(FILE **infilePp, FILE **outfilePp, char **fileBufferPtr) {
 
 	chdir(REL_PATH); 		// change to the correct relative path
 	setbuf(stdout, NULL); 	// disable buffering in stdout
 
 	// Open Input File
-	FILE *infilePointer = NULL;
-	infilePointer = fopen(INPUT_FILE, "r+");
-	checkError(infilePointer, "infilePointer");
+	*infilePp = fopen(INPUT_FILE, "r+");
+	checkError(*infilePp, "infilePp");
 
 	// Open Output File
-	FILE *outfilePointer;
-	outfilePointer = fopen(OUTPUT_FILE, "w+");
-	checkError(outfilePointer, "outfilePointer");
+	*outfilePp = fopen(OUTPUT_FILE, "w+");
+	checkError(*outfilePp, "outfilePp");
 
 	// allocate memory for a string of the input file
-	int fileLength = getFileLength(infilePointer);
-	char *inputFileBuffer = malloc(sizeof(char)*(fileLength+1));
+	int fileLength = getFileLength(*infilePp);
+	*fileBufferPtr = malloc(sizeof(char)*(fileLength+1));
+
+	// Read the input file into our buffer and make all chars lowercase
+	fread(*fileBufferPtr, fileLength+1, 1, *infilePp);
+	makeStringLowercase(*fileBufferPtr);
+
+}
+
+int main(int argc, char **argv) {
+
+	if (strlen(REL_PATH)<1) {
+		printf("PLEASE SET REL_PATH TO PATH OF YOUR DESIRED FILE LOCATION for infile.txt and outfile.txt");
+		return 0;
+	}
+
+	char *infileBuffer; FILE *infilePointer=NULL; FILE *outfilePointer=NULL;
+
+	setup(&infilePointer, &outfilePointer, &infileBuffer); // setups stuff
 
 	// create an array of strings and an array of counted strings
 	char **stringArray = malloc(sizeof(char)*MAX_NUM_WORDS);
 	countedString **countedStringArray= malloc(sizeof(countedString)*MAX_NUM_WORDS);
 
-	// Read the input file into our buffer and make all chars lowercase
-	fread(inputFileBuffer, fileLength+1, 1, infilePointer);
-	makeStringLowercase(inputFileBuffer);
-
 	//create string array
-	createStringArray(stringArray, inputFileBuffer, REQUIRED_DELIMS);
+	createStringArray(stringArray, infileBuffer, REQUIRED_DELIMS);
 
 	// creates a null terminated array of counted strings from a string array
 	createCountedStringArray(countedStringArray, stringArray);
@@ -63,27 +69,9 @@ int main(int argc, char **argv) {
 	free(countedStringArray);
 	freeStringArray(stringArray);
 	free(stringArray);
-	free(inputFileBuffer);
+	free(infileBuffer);
 
 	return 0;
-}
-
-//writes the counted strings to a file
-void writeCountedString(countedString **countedStringArray, FILE *filePtr) {
-	int i=0;
-	while((*(countedStringArray+i))) {
-		fprintf(filePtr, "%d : %s\n", (*(countedStringArray+i))->count, (*(countedStringArray+i))->string);
-		i++;
-	}
-}
-
-/*
- * Frees the data in the counted string array but not the counted string array itself
- */
-void freeCountedStringData(countedString **countedStringArray) {
-	while((*(countedStringArray++))) {
-		free((*(countedStringArray))->string);
-	}
 }
 
 /**
@@ -93,38 +81,6 @@ void freeStringArray(char **stringArray) {
 	while((*(stringArray++))) {
 		free(stringArray);
 	}
-}
-
-/**
- * Function loops through all of the strings in the stringArray.
- * Updates a countedStringArray with all of the unuique words and there occurance count
- */
-void createCountedStringArray(countedString **countedStringArray, char **stringArray) {
-	char escapeByte = 0x1B;
-	int count;
-	// loop through every string in the string array
-	int i = 0; int countedStringCount = 0;
-	while(*(stringArray+i)) {
-		count=1;
-		// If the first char of the string is not equal to an escape byte -> uncounted string is found.
-		if ((char) **(stringArray+i) != escapeByte) {
-			// Loop through all of the next strings in the string array
-			int j=i+1;
-			while (*(stringArray+j) != NULL) {
-				// Count how many times the string occurs in the array, setting the fist byte of the new string
-				// to indicate the string has already been counted
-				if (!(strcmp((char *) *(stringArray+i), (char *) (*(stringArray+j))))) {
-					count++;
-					stringArray[j] = &escapeByte;
-				}
-				j++;
-			}
-			updateCountedString(&countedStringArray[countedStringCount], *(stringArray+i), count);
-			countedStringCount++;
-		}
-		i++;
-	}
-	countedStringArray[countedStringCount] = NULL;
 }
 
 /*
@@ -180,16 +136,7 @@ void makeStringLowercase(char *stringPointer) {
 	}
 }
 
-/**
- * Allocates memory and updates counted string
- * Memory should be free'd manually when done with the data.
- */
-void updateCountedString(countedString **ctdStr, char *str, int count) {
-	(*ctdStr) = malloc(sizeof(countedString));
-	(*ctdStr)->count = count;
-	(*ctdStr)->string = malloc(sizeof(char)*strlen(str));
-	(*ctdStr)->string = str;
-}
+
 
 
 

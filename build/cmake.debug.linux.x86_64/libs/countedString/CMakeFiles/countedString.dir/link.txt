@@ -1,0 +1,2 @@
+/usr/bin/ar qc libcountedString.a  CMakeFiles/countedString.dir/countedString.c.o
+/usr/bin/ranlib libcountedString.a

@@ -1,3 +1,0 @@
-/home/lance/eclipse-workspace/aeroqualQ2/build/default/CMakeFiles/rebuild_cache.dir
-/home/lance/eclipse-workspace/aeroqualQ2/build/default/CMakeFiles/edit_cache.dir
-/home/lance/eclipse-workspace/aeroqualQ2/build/default/CMakeFiles/aeroqual.dir

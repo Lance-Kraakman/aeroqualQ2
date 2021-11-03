@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/home/lance/eclipse-workspace/aeroqualQ2/build/cmake.debug.linux.x86_64",
+  "command": "/usr/bin/cc  -I/    -o CMakeFiles/aeroqual.dir/aeroqual.c.o   -c /home/lance/eclipse-workspace/aeroqualQ2/aeroqual.c",
+  "file": "/home/lance/eclipse-workspace/aeroqualQ2/aeroqual.c"
+},
+{
+  "directory": "/home/lance/eclipse-workspace/aeroqualQ2/build/cmake.debug.linux.x86_64/libs/countedString",
+  "command": "/usr/bin/cc  -I/    -o CMakeFiles/countedString.dir/countedString.c.o   -c /home/lance/eclipse-workspace/aeroqualQ2/libs/countedString/countedString.c",
+  "file": "/home/lance/eclipse-workspace/aeroqualQ2/libs/countedString/countedString.c"
+}
+]

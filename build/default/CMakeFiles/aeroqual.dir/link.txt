@@ -1,1 +1,0 @@
-/usr/bin/cc   -rdynamic CMakeFiles/aeroqual.dir/aeroqual.c.o  -o aeroqual 
